@@ -1,0 +1,31 @@
+{% extends 'healthlog/base.html' %}
+
+{% block content %}
+<table>
+    <thead>
+        <tr>
+            <th>Dátum</th>
+            <th>Súly (kg)</th>
+            <th>Alvás (óra)</th>
+            <th>Hangulat</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for entry in entries %}
+        <tr>
+            <td>{{ entry.date }}</td>
+            <td>{{ entry.weight_kg|default:'-' }}</td>
+            <td>{{ entry.sleep_hours|default:'-' }}</td>
+            <td>{{ entry.get_mood_display }}</td>
+            <td class="actions">
+                <a href="{% url 'healthlog:entry_edit' entry.pk %}">szerkeszt</a>
+                <a href="{% url 'healthlog:entry_delete' entry.pk %}">törlés</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5">Még nincs bejegyzés.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

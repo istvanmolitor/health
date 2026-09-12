@@ -1,0 +1,11 @@
+{% extends 'healthlog/base.html' %}
+
+{% block content %}
+<h2>Biztosan törlöd?</h2>
+<p>{{ entry.date }} – {{ entry.get_mood_display }}</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Törlés</button>
+    <a href="{% url 'healthlog:entry_list' %}">Mégse</a>
+</form>
+{% endblock %}

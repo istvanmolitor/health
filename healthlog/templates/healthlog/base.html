@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <title>Egészségnapló</title>
+    <style>
+        body { font-family: sans-serif; max-width: 700px; margin: 2rem auto; padding: 0 1rem; }
+        table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        th, td { text-align: left; padding: 0.4rem; border-bottom: 1px solid #ddd; }
+        form p { margin: 0.6rem 0; }
+        .actions a { margin-right: 0.5rem; }
+        header { display: flex; justify-content: space-between; align-items: center; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Egészségnapló</h1>
+        <a href="{% url 'healthlog:entry_create' %}">+ Új bejegyzés</a>
+    </header>
+    {% block content %}{% endblock %}
+</body>
+</html>
