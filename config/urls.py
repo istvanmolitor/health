@@ -14,7 +14,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.contrib.auth.decorators import login_required
 from django.urls import include, path, re_path
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic import TemplateView
 from rest_framework.routers import DefaultRouter
 
@@ -23,7 +25,9 @@ from healthlog.api import HealthEntryViewSet
 router = DefaultRouter()
 router.register('entries', HealthEntryViewSet, basename='healthentry')
 
-admin_spa = TemplateView.as_view(template_name='healthlog/admin_spa.html')
+admin_spa = login_required(
+    ensure_csrf_cookie(TemplateView.as_view(template_name='healthlog/admin_spa.html'))
+)
 
 urlpatterns = [
     path('api/', include(router.urls)),

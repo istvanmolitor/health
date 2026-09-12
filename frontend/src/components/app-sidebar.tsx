@@ -1,8 +1,9 @@
-import { ClipboardList, HeartPulse } from 'lucide-react'
+import { ClipboardList, HeartPulse, LogOut } from 'lucide-react'
 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
@@ -12,6 +13,7 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@/components/ui/sidebar'
+import { logout } from '@/lib/api'
 
 const navItems = [{ title: 'Bejegyzések', icon: ClipboardList, isActive: true }]
 
@@ -50,6 +52,16 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton onClick={() => logout()}>
+              <LogOut />
+              <span>Kijelentkezés</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
       <SidebarRail />
     </Sidebar>
   )

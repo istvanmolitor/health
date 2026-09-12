@@ -2,9 +2,17 @@ import type { HealthEntry, HealthEntryInput } from '@/types'
 
 const BASE_URL = '/api/entries/'
 
+function getCsrfToken(): string {
+  return document.cookie.match(/(?:^|; )csrftoken=([^;]+)/)?.[1] ?? ''
+}
+
 async function request<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(url, {
-    headers: { 'Content-Type': 'application/json' },
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCsrfToken(),
+    },
     ...options,
   })
   if (!response.ok) {
@@ -35,4 +43,13 @@ export function updateEntry(id: number, input: HealthEntryInput): Promise<Health
 
 export function deleteEntry(id: number): Promise<void> {
   return request<void>(`${BASE_URL}${id}/`, { method: 'DELETE' })
+}
+
+export async function logout(): Promise<void> {
+  await fetch('/logout/', {
+    method: 'POST',
+    credentials: 'same-origin',
+    headers: { 'X-CSRFToken': getCsrfToken() },
+  })
+  window.location.href = '/login/'
 }
