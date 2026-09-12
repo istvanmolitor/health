@@ -6,11 +6,43 @@ Docker-ben fut, Postgres adatbázissal, hogy később élesbe is ki lehessen ten
 ## Projekt felépítés
 
 - `config/` – Django projekt beállítások (settings, urls, wsgi)
-- `healthlog/` – az app: modellek, view-k, admin, template-ek
-- `Dockerfile` – az alkalmazás image-e (gunicorn-nal fut prod módban)
+- `healthlog/` – az app: modellek, view-k, API (DRF), template-ek
+- `frontend/` – React + TypeScript + shadcn/ui admin SPA (Vite)
+- `Dockerfile` – multi-stage image: 1. a frontend buildelése (node), 2. az alkalmazás image-e (gunicorn-nal fut prod módban)
 - `docker-compose.yml` – fejlesztői összeállítás (Django `runserver`, élő kód-mount, `DEBUG=True`)
 - `docker-compose.prod.yml` – éles override (`gunicorn`, nincs kód-mount, `DEBUG=False`)
 - `entrypoint.sh` – induláskor lefuttatja a migrációkat (élesben a `collectstatic`-ot is)
+
+## Admin felület (SPA)
+
+A `/admin/` címen egy React + shadcn/ui admin felület fut (nem a Django beépített
+admin site-ja – azt ez a projekt nem használja). A felület a `/api/entries/`
+REST API-n (Django REST Framework) keresztül végzi a `HealthEntry` bejegyzések
+listázását, létrehozását, szerkesztését és törlését.
+
+A frontend forrása a `frontend/` mappában van. Buildelt kimenete a
+`healthlog/static/admin/` alá kerül, amit Django statikus fájlként szolgál ki
+egy egyszerű template (`healthlog/templates/healthlog/admin_spa.html`) mögött.
+
+Ha a `frontend/` alatt módosítasz valamit, a Docker image újraépítésekor
+(`docker compose up --build`) a build stage automatikusan újrafuttatja a
+Vite build-et. Mivel a dev compose élőben mountolja a kódot (`.:/app`), helyi
+fejlesztéshez a frontendet a hoston is buildelni kell, hogy a friss fájlok
+látszódjanak a futó konténerben:
+
+```bash
+cd frontend
+npm install       # csak első alkalommal / függőségváltozáskor
+npm run build     # újraépíti a healthlog/static/admin/ tartalmát
+```
+
+Vagy standalone Vite dev szerverként, ami proxyzza az `/api` hívásokat a
+`localhost:8000`-en futó Djangóra:
+
+```bash
+cd frontend
+npm run dev       # http://localhost:5173
+```
 
 ## Fejlesztés (dev)
 
@@ -27,12 +59,11 @@ Gyakori parancsok:
 ```bash
 docker compose exec web python manage.py makemigrations   # új migráció, ha modellt módosítasz
 docker compose exec web python manage.py migrate           # migrációk lefuttatása
-docker compose exec web python manage.py createsuperuser   # admin felhasználó létrehozása
 docker compose exec web python manage.py shell              # Django shell
 docker compose down                                          # leállítás (adat megmarad a volume-ban)
 ```
 
-Admin felület: http://localhost:8000/admin/
+Admin felület (React SPA): http://localhost:8000/admin/
 
 ## Éles kirakás (prod)
 
@@ -53,10 +84,12 @@ Reverse proxy (pl. nginx/Caddy) + TLS beállítása a `web` szolgáltatás elé 
 ## Tanulási pontok ebben a projektben
 
 - **Modell** (`healthlog/models.py`): mezők, `choices`, `Meta.ordering`
-- **Admin** (`healthlog/admin.py`): hogyan regisztrálj modellt admin felületre
 - **Form** (`healthlog/forms.py`): `ModelForm` – validáció automatikusan a modellből
 - **View-k** (`healthlog/views.py`): function-based view-k, CRUD (lista, létrehozás, szerkesztés, törlés)
+- **REST API** (`healthlog/serializers.py`, `healthlog/api.py`): DRF `ModelSerializer` + `ModelViewSet`,
+  router-rel bekötve (`config/urls.py`)
+- **SPA admin** (`frontend/`): React + TypeScript + shadcn/ui, Vite build-elve és Django static-ból kiszolgálva
 - **URL routing** (`healthlog/urls.py`, `config/urls.py`): app-szintű URL-ek `include()`-dal
 - **Template-ek**: öröklés (`{% extends %}`), `{% for %}`, `{% url %}`
-- **Docker**: multi-stage nélküli, de production-ready image; `entrypoint.sh` migrációhoz;
+- **Docker**: multi-stage image (node build stage + python runtime); `entrypoint.sh` migrációhoz;
   dev/prod compose overlay minta

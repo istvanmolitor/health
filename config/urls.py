@@ -14,10 +14,20 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
+from django.views.generic import TemplateView
+from rest_framework.routers import DefaultRouter
+
+from healthlog.api import HealthEntryViewSet
+
+router = DefaultRouter()
+router.register('entries', HealthEntryViewSet, basename='healthentry')
+
+admin_spa = TemplateView.as_view(template_name='healthlog/admin_spa.html')
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
+    path('admin/', admin_spa),
+    re_path(r'^admin/.+$', admin_spa),
     path('', include('healthlog.urls')),
 ]
