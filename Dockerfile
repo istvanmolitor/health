@@ -25,6 +25,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 COPY --from=frontend-build /app/healthlog/static/admin ./healthlog/static/admin
+COPY --from=frontend-build /app/healthlog/static/healthlog/css ./healthlog/static/healthlog/css
 RUN chmod +x entrypoint.sh
 
 RUN adduser --disabled-password --gecos "" appuser \

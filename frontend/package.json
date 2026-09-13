@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && npm run build:home",
+    "build:home": "tailwindcss -i src/home.css -o ../healthlog/static/healthlog/css/home.css --minify",
     "lint": "oxlint",
     "preview": "vite preview"
   },
@@ -25,6 +26,7 @@
     "tw-animate-css": "^1.4.0"
   },
   "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
     "@types/node": "^24.13.4",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",

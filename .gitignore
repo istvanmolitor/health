@@ -9,3 +9,4 @@ staticfiles/
 frontend/node_modules/
 frontend/dist/
 healthlog/static/admin/
+healthlog/static/healthlog/css/

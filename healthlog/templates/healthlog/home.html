@@ -8,117 +8,120 @@
     <link rel="icon" type="image/svg+xml" href="{% static 'healthlog/img/favicon.svg' %}">
     <link rel="stylesheet" href="{% static 'healthlog/css/home.css' %}">
 </head>
-<body>
+<body class="bg-hero min-h-dvh bg-[#0b0714] text-[#f5f3fb]">
 
-<header class="site-header">
-    <div class="wrap">
-        <a class="brand" href="{% url 'healthlog:home' %}">
-            <img src="{% static 'healthlog/img/favicon.svg' %}" alt="">
+<header class="sticky top-0 z-20 border-b border-white/10 bg-[#0b0714]/65 backdrop-blur-md">
+    <div class="mx-auto flex w-[min(72rem,100%-2.5rem)] items-center justify-between gap-4 py-4">
+        <a class="flex items-center gap-2.5 text-lg font-bold tracking-tight no-underline" href="{% url 'healthlog:home' %}">
+            <img class="h-7.5 w-7.5" src="{% static 'healthlog/img/favicon.svg' %}" alt="">
             Egészségnapló
         </a>
-        <nav class="site-nav">
-            <span class="nav-links">
-                <a href="#funkciok">Funkciók</a>
-            </span>
-            <a class="btn btn-primary" href="/admin/">Belépés</a>
+        <nav class="flex items-center gap-7">
+            <a class="hidden text-sm text-[#b6aecb] no-underline transition-colors hover:text-[#f5f3fb] sm:inline" href="#funkciok">Funkciók</a>
+            <a class="btn-primary" href="/admin/">Belépés</a>
         </nav>
     </div>
 </header>
 
 <main>
-    <section class="hero">
-        <div class="wrap">
-            <span class="eyebrow"><span class="dot"></span> Minden a saját formádért, egy helyen</span>
-            <h1>Kövesd az <span class="grad">edzést, étkezést, alvást</span><br>és a testsúlyt — naponta.</h1>
-            <p class="lead">
+    <section class="px-0 pt-14 pb-12 text-center sm:pt-24 sm:pb-20">
+        <div class="mx-auto w-[min(72rem,100%-2.5rem)]">
+            <span class="eyebrow mb-6">
+                <span class="h-1.75 w-1.75 rounded-full bg-accent shadow-[0_0_0_4px_rgba(71,191,255,0.2)]"></span>
+                Minden a saját formádért, egy helyen
+            </span>
+            <h1 class="mx-auto mb-4 max-w-4xl text-4xl leading-[1.08] font-bold tracking-tight sm:text-6xl">
+                Kövesd az <span class="bg-linear-to-br from-accent to-brand bg-clip-text text-transparent">edzést, étkezést, alvást</span> és a testsúlyt — naponta.
+            </h1>
+            <p class="mx-auto mb-9 max-w-2xl text-base text-[#b6aecb] sm:text-lg">
                 Az Egészségnapló segít, hogy a napi edzéseidet, étkezéseidet, alvásodat és
                 testsúlyodat egyetlen, egyszerű felületen rögzítsd, és lásd, hogyan alakul
                 a fejlődésed hétről hétre.
             </p>
-            <div class="hero-actions">
-                <a class="btn btn-primary btn-lg" href="/admin/">Kezdd el most</a>
-                <a class="btn btn-ghost btn-lg" href="#funkciok">Funkciók megtekintése</a>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <a class="btn-primary btn-lg" href="/admin/">Kezdd el most</a>
+                <a class="btn-ghost btn-lg" href="#funkciok">Funkciók megtekintése</a>
             </div>
 
-            <div class="stats">
+            <div class="stat-box mt-12 sm:mt-16">
                 <div>
-                    <strong>4</strong>
-                    <span>trackelt terület</span>
+                    <strong class="block text-2xl tracking-tight">4</strong>
+                    <span class="text-sm text-[#b6aecb]">trackelt terület</span>
                 </div>
                 <div>
-                    <strong>1 perc</strong>
-                    <span>egy bejegyzés rögzítése</span>
+                    <strong class="block text-2xl tracking-tight">1 perc</strong>
+                    <span class="text-sm text-[#b6aecb]">egy bejegyzés rögzítése</span>
                 </div>
                 <div>
-                    <strong>100%</strong>
-                    <span>saját adat, saját kontroll</span>
+                    <strong class="block text-2xl tracking-tight">100%</strong>
+                    <span class="text-sm text-[#b6aecb]">saját adat, saját kontroll</span>
                 </div>
                 <div>
-                    <strong>0 Ft</strong>
-                    <span>ingyenes használat</span>
+                    <strong class="block text-2xl tracking-tight">0 Ft</strong>
+                    <span class="text-sm text-[#b6aecb]">ingyenes használat</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section" id="funkciok">
-        <div class="wrap">
-            <div class="section-head">
-                <h2>Négy terület, egy napló</h2>
-                <p>Nem kell négy külön alkalmazás — minden fontos mérőszámod egy helyen fér el.</p>
+    <section class="py-12 sm:py-20" id="funkciok">
+        <div class="mx-auto w-[min(72rem,100%-2.5rem)]">
+            <div class="mx-auto mb-10 max-w-xl text-center sm:mb-13">
+                <h2 class="mb-3 text-2xl font-bold tracking-tight sm:text-4xl">Négy terület, egy napló</h2>
+                <p class="text-[#b6aecb]">Nem kell négy külön alkalmazás — minden fontos mérőszámod egy helyen fér el.</p>
             </div>
 
-            <div class="features">
+            <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                 <article class="feature-card">
-                    <div class="feature-icon icon-workout">
+                    <div class="feature-icon bg-linear-to-br from-[#863bff] to-[#6b1fe0]">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5 17.5 17.5"/><path d="m21 21-1.5-1.5M3 3l1.5 1.5"/><path d="M18.5 10.5 21 8a1.5 1.5 0 0 0-3-3l-2.5 2.5"/><path d="M13.5 15.5 11 18a1.5 1.5 0 0 1-2.12 0l-.88-.88a1.5 1.5 0 0 1 0-2.12L10.5 12.5"/></svg>
                     </div>
-                    <h3>Edzés</h3>
-                    <p>Rögzítsd az edzéseid típusát, időtartamát és intenzitását, hogy lásd a heti terhelésed alakulását.</p>
+                    <h3 class="mb-2 text-lg font-semibold tracking-tight">Edzés</h3>
+                    <p class="text-sm text-[#b6aecb]">Rögzítsd az edzéseid típusát, időtartamát és intenzitását, hogy lásd a heti terhelésed alakulását.</p>
                 </article>
 
                 <article class="feature-card">
-                    <div class="feature-icon icon-meals">
+                    <div class="feature-icon bg-linear-to-br from-[#ff9142] to-[#ff5c42]">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2v6a2 2 0 0 0 2 2v0a2 2 0 0 0 2-2V2"/><path d="M9 10v12"/><path d="M17 2c-1.5 2-2 4-2 6a2 2 0 0 0 2 2v10"/></svg>
                     </div>
-                    <h3>Étkezés</h3>
-                    <p>Naplózd az étkezéseidet és a kalóriabevitelt, hogy tudatosabban táplálkozz nap mint nap.</p>
+                    <h3 class="mb-2 text-lg font-semibold tracking-tight">Étkezés</h3>
+                    <p class="text-sm text-[#b6aecb]">Naplózd az étkezéseidet és a kalóriabevitelt, hogy tudatosabban táplálkozz nap mint nap.</p>
                 </article>
 
                 <article class="feature-card">
-                    <div class="feature-icon icon-sleep">
+                    <div class="feature-icon bg-linear-to-br from-[#47bfff] to-[#2874e0]">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/></svg>
                     </div>
-                    <h3>Alvás</h3>
-                    <p>Kövesd nyomon az alvásidődet és a hangulatod, hogy meglásd az összefüggést a pihenéssel.</p>
+                    <h3 class="mb-2 text-lg font-semibold tracking-tight">Alvás</h3>
+                    <p class="text-sm text-[#b6aecb]">Kövesd nyomon az alvásidődet és a hangulatod, hogy meglásd az összefüggést a pihenéssel.</p>
                 </article>
 
                 <article class="feature-card">
-                    <div class="feature-icon icon-weight">
+                    <div class="feature-icon bg-linear-to-br from-[#2dd4a7] to-[#12a583]">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="12" cy="12" r="3.5"/><path d="M12 3v1.5M12 19.5V21M3 12h1.5M19.5 12H21"/></svg>
                     </div>
-                    <h3>Testsúly</h3>
-                    <p>Mérd és rögzítsd a testsúlyod rendszeresen, és kövesd a trendet grafikonon.</p>
+                    <h3 class="mb-2 text-lg font-semibold tracking-tight">Testsúly</h3>
+                    <p class="text-sm text-[#b6aecb]">Mérd és rögzítsd a testsúlyod rendszeresen, és kövesd a trendet grafikonon.</p>
                 </article>
             </div>
         </div>
     </section>
 
-    <section class="section">
-        <div class="wrap">
+    <section class="py-12 sm:py-20">
+        <div class="mx-auto w-[min(72rem,100%-2.5rem)]">
             <div class="cta-band">
-                <h2>Készen állsz elkezdeni?</h2>
-                <p>Lépj be, vagy hozz létre egy fiókot az admin felületen, és rögzítsd az első bejegyzésed.</p>
-                <a class="btn btn-primary btn-lg" href="/admin/">Belépés az admin felületre</a>
+                <h2 class="mb-3 text-2xl font-bold tracking-tight sm:text-3xl">Készen állsz elkezdeni?</h2>
+                <p class="mb-7 text-[#b6aecb]">Lépj be, vagy hozz létre egy fiókot az admin felületen, és rögzítsd az első bejegyzésed.</p>
+                <a class="btn-primary btn-lg" href="/admin/">Belépés az admin felületre</a>
             </div>
         </div>
     </section>
 </main>
 
-<footer class="site-footer">
-    <div class="wrap">
+<footer class="mt-8 border-t border-white/10 py-8 sm:mt-12">
+    <div class="mx-auto flex w-[min(72rem,100%-2.5rem)] flex-wrap items-center justify-between gap-4 text-center text-sm text-[#b6aecb] sm:text-left">
         <span>&copy; {% now "Y" %} Egészségnapló</span>
-        <a href="/admin/">Admin felület</a>
+        <a class="text-[#b6aecb] no-underline transition-colors hover:text-[#f5f3fb]" href="/admin/">Admin felület</a>
     </div>
 </footer>
 
