@@ -1,3 +1,8 @@
+export interface AuthUser {
+  id: number
+  username: string
+}
+
 export interface HealthEntry {
   id: number
   date: string

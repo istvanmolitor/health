@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import { AppSidebar } from '@/components/app-sidebar'
+import { AuthPage } from '@/components/auth-page'
 import { EntryFormDialog } from '@/components/entry-form-dialog'
 import {
   AlertDialog,
@@ -26,15 +27,37 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { createEntry, deleteEntry, listEntries, updateEntry } from '@/lib/api'
-import { moodEmoji, type HealthEntry, type HealthEntryInput } from '@/types'
+import { createEntry, deleteEntry, fetchCurrentUser, listEntries, logout, updateEntry } from '@/lib/api'
+import { moodEmoji, type AuthUser, type HealthEntry, type HealthEntryInput } from '@/types'
 
 export default function App() {
+  const [user, setUser] = useState<AuthUser | null>(null)
+  const [authLoading, setAuthLoading] = useState(true)
   const [entries, setEntries] = useState<HealthEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [formOpen, setFormOpen] = useState(false)
   const [editingEntry, setEditingEntry] = useState<HealthEntry | null>(null)
   const [deletingEntry, setDeletingEntry] = useState<HealthEntry | null>(null)
+
+  async function checkAuth() {
+    try {
+      setUser(await fetchCurrentUser())
+    } finally {
+      setAuthLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    checkAuth()
+  }, [])
+
+  async function handleLogout() {
+    try {
+      await logout()
+    } finally {
+      setUser(null)
+    }
+  }
 
   async function refresh() {
     setLoading(true)
@@ -48,8 +71,8 @@ export default function App() {
   }
 
   useEffect(() => {
-    refresh()
-  }, [])
+    if (user) refresh()
+  }, [user])
 
   function openCreate() {
     setEditingEntry(null)
@@ -89,9 +112,22 @@ export default function App() {
     }
   }
 
+  if (authLoading) {
+    return null
+  }
+
+  if (!user) {
+    return (
+      <>
+        <Toaster />
+        <AuthPage onAuthenticated={setUser} />
+      </>
+    )
+  }
+
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar user={user} onLogout={handleLogout} />
       <SidebarInset>
         <Toaster />
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">

@@ -13,11 +13,16 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@/components/ui/sidebar'
-import { logout } from '@/lib/api'
+import type { AuthUser } from '@/types'
 
 const navItems = [{ title: 'Bejegyzések', icon: ClipboardList, isActive: true }]
 
-export function AppSidebar() {
+interface AppSidebarProps {
+  user: AuthUser
+  onLogout: () => void
+}
+
+export function AppSidebar({ user, onLogout }: AppSidebarProps) {
   return (
     <Sidebar>
       <SidebarHeader>
@@ -29,7 +34,7 @@ export function AppSidebar() {
               </div>
               <div className="flex flex-col gap-0.5 leading-none">
                 <span className="font-medium">Egészségnapló</span>
-                <span className="text-muted-foreground text-xs">Admin</span>
+                <span className="text-muted-foreground text-xs">{user.username}</span>
               </div>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -55,7 +60,7 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton onClick={() => logout()}>
+            <SidebarMenuButton onClick={onLogout}>
               <LogOut />
               <span>Kijelentkezés</span>
             </SidebarMenuButton>

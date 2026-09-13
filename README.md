@@ -13,12 +13,21 @@ Docker-ben fut, Postgres adatbázissal, hogy később élesbe is ki lehessen ten
 - `docker-compose.prod.yml` – éles override (`gunicorn`, nincs kód-mount, `DEBUG=False`)
 - `entrypoint.sh` – induláskor lefuttatja a migrációkat (élesben a `collectstatic`-ot is)
 
+## Oldalak
+
+- `/` – nyitóoldal (sima Django template, `healthlog/views.home`), a designja
+  még kidolgozás alatt van
+- `/admin/` – a React SPA (lásd lent), bejelentkezés és regisztráció is ennek
+  a része
+
 ## Admin felület (SPA)
 
 A `/admin/` címen egy React + shadcn/ui admin felület fut (nem a Django beépített
 admin site-ja – azt ez a projekt nem használja). A felület a `/api/entries/`
 REST API-n (Django REST Framework) keresztül végzi a `HealthEntry` bejegyzések
-listázását, létrehozását, szerkesztését és törlését.
+listázását, létrehozását, szerkesztését és törlését. A bejelentkezés és a
+regisztráció is a SPA része, a `/api/auth/` végpontokon (login, register,
+logout, user) keresztül, Django session-alapú autentikációval.
 
 A frontend forrása a `frontend/` mappában van. Buildelt kimenete a
 `healthlog/static/admin/` alá kerül, amit Django statikus fájlként szolgál ki
@@ -84,12 +93,12 @@ Reverse proxy (pl. nginx/Caddy) + TLS beállítása a `web` szolgáltatás elé 
 ## Tanulási pontok ebben a projektben
 
 - **Modell** (`healthlog/models.py`): mezők, `choices`, `Meta.ordering`
-- **Form** (`healthlog/forms.py`): `ModelForm` – validáció automatikusan a modellből
-- **View-k** (`healthlog/views.py`): function-based view-k, CRUD (lista, létrehozás, szerkesztés, törlés)
-- **REST API** (`healthlog/serializers.py`, `healthlog/api.py`): DRF `ModelSerializer` + `ModelViewSet`,
-  router-rel bekötve (`config/urls.py`)
-- **SPA admin** (`frontend/`): React + TypeScript + shadcn/ui, Vite build-elve és Django static-ból kiszolgálva
+- **Form** (`healthlog/forms.py`): `UserCreationForm` – a regisztrációs form, amit az API is újrahasznosít
+- **REST API** (`healthlog/serializers.py`, `healthlog/api.py`): DRF `ModelSerializer` + `ModelViewSet`
+  a bejegyzésekhez, plusz `APIView`-k a session-alapú auth-hoz (login/register/logout/user),
+  router-rel és sima `path()`-okkal bekötve (`config/urls.py`)
+- **SPA admin** (`frontend/`): React + TypeScript + shadcn/ui, Vite build-elve és Django static-ból kiszolgálva;
+  a login/regisztráció is ide tartozik, API-hívásokon keresztül
 - **URL routing** (`healthlog/urls.py`, `config/urls.py`): app-szintű URL-ek `include()`-dal
-- **Template-ek**: öröklés (`{% extends %}`), `{% for %}`, `{% url %}`
 - **Docker**: multi-stage image (node build stage + python runtime); `entrypoint.sh` migrációhoz;
   dev/prod compose overlay minta
